@@ -27,20 +27,13 @@ class MainActivity : AppCompatActivity() {
 
         MainActivityUi().setContentView(this)
 
-        val handler = Handler()
-        handler.postDelayed(runnable, 2000)
+        runServer()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             hideSystemUI()
-        }
-    }
-
-    private val runnable = object : Runnable {
-        override fun run() {
-            runServer()
         }
     }
 
