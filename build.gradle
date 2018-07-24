@@ -3,14 +3,12 @@
 buildscript {
     ext.kotlin_version = '1.2.51'
     ext.anko_version='0.10.5'
-    ext.ktor_version='0.9.3'
 
     repositories {
         google()
         jcenter()
         mavenCentral()
         maven { url "https://dl.bintray.com/kotlin/kotlinx" }
-        maven { url "https://dl.bintray.com/kotlin/ktor" }
     }
 
     dependencies {
@@ -28,7 +26,6 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://dl.bintray.com/kotlin/kotlinx" }
-        maven { url "https://dl.bintray.com/kotlin/ktor" }
     }
 }
 

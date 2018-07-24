@@ -4,15 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.Window
-import io.ktor.application.call
-import io.ktor.http.ContentType
-import io.ktor.response.respondText
-import io.ktor.routing.get
-import io.ktor.routing.routing
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
 import org.jetbrains.anko.*
-
 
 class MainActivity : Activity() {
 
@@ -34,17 +26,6 @@ class MainActivity : Activity() {
     }
 
     private fun runServer() {
-        val server = embeddedServer(Netty, port = 8080) {
-            routing {
-                get("/") {
-                    call.respondText("Hello World!", ContentType.Text.Plain)
-                }
-                get("/demo") {
-                    call.respondText("HELLO WORLD!")
-                }
-            }
-        }
-        server.start(wait = true)
     }
 
     private fun hideSystemUI() {
