@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import org.jetbrains.anko.*
-import spark.kotlin.*
 
 class MainActivity : Activity() {
 
@@ -27,19 +26,6 @@ class MainActivity : Activity() {
     }
 
     private fun runServer() {
-        val http = ignite()
-
-        http.port(8080)
-        http.ipAddress("0.0.0.0")
-
-        val maxThreads = 8
-        val minThreads = 2
-        val timeOutMillis = 30000
-        http.threadPool(maxThreads, minThreads, timeOutMillis)
-
-        http.get("/") {
-            "Hello Spark Kotlin!"
-        }
     }
 
     private fun hideSystemUI() {
