@@ -26,6 +26,8 @@ class MainActivity : Activity() {
     }
 
     private fun runServer() {
+        val androidWebServer = AndroidWebServer("0.0.0.0", 8080)
+        androidWebServer.start()
     }
 
     private fun hideSystemUI() {
