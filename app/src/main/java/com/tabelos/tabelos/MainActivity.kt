@@ -1,8 +1,7 @@
 package com.tabelos.tabelos
 
+import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
 import io.ktor.application.call
@@ -13,12 +12,9 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import org.jetbrains.anko.*
-import android.support.v4.os.HandlerCompat.postDelayed
-import android.support.v4.os.HandlerCompat.postDelayed
-import kotlinx.coroutines.experimental.Runnable
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
