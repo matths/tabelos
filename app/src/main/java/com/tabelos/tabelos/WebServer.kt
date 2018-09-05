@@ -2,7 +2,7 @@ package com.tabelos.tabelos
 
 import fi.iki.elonen.NanoHTTPD
 
-class AndroidWebServer(hostname:String, port: Int) : NanoHTTPD(hostname, port) {
+class WebServer(hostname:String, port: Int) : NanoHTTPD(hostname, port) {
 
     override fun serve(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
         var msg = "<html><body><h1>Hello server</h1>\n"

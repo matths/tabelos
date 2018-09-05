@@ -41,10 +41,10 @@ class MainActivity : Activity() {
         // inspired by https://stackoverflow.com/questions/36553190/check-in-the-onreceivedsslerror-method-of-a-webviewclient-if-a-certificate-is
 
         try {
-            val androidWebServer = AndroidWebServer(Constants.HOSTNAME, Constants.PORT)
+            val webServer = WebServer(Constants.HOSTNAME, Constants.PORT)
             val sslServerSocketFactory: SSLServerSocketFactory = NanoHTTPD.makeSSLSocketFactory(Constants.KEYSTORE_PATH, Constants.KEYSTORE_PASSWORD.toCharArray())
-            androidWebServer.makeSecure(sslServerSocketFactory, null);
-            androidWebServer.start()
+            webServer.makeSecure(sslServerSocketFactory, null);
+            webServer.start()
         } catch (e: Exception) {
             e.printStackTrace()
         }
