@@ -10,12 +10,9 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-
-        MainActivityUi().setContentView(this)
-
         runServer()
+        runClient()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -30,6 +27,10 @@ class MainActivity : Activity() {
         androidWebServer.start()
     }
 
+    private fun runClient() {
+        MainActivityUi().setContentView(this)
+    }
+
     private fun hideSystemUI() {
         val decorView = window.decorView
         decorView.systemUiVisibility = (
@@ -40,18 +41,4 @@ class MainActivity : Activity() {
                         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
-}
-
-class MainActivityUi : AnkoComponent<MainActivity> {
-
-    override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
-
-        relativeLayout {
-            webView {
-                loadUrl("file:///android_asset/index.html")
-            }
-        }
-
-    }
-
 }
