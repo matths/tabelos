@@ -1,4 +1,4 @@
-package com.tabelos.tabelos
+package com.tabelos
 
 class Constants {
     companion object {

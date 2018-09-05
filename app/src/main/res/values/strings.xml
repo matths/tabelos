@@ -1,7 +1,4 @@
 <resources>
-    <string name="app_name">Tabelos</string>
-
-    <string name="title_activity_main">MainActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="label_application">Tabelos</string>
+    <string name="label_main_activity">Tabelos Launcher</string>
 </resources>

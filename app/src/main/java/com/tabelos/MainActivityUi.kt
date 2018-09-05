@@ -1,4 +1,4 @@
-package com.tabelos.tabelos
+package com.tabelos
 
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext

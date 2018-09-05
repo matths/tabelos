@@ -1,4 +1,4 @@
-package com.tabelos.tabelos
+package com.tabelos
 
 import android.app.Activity
 import android.os.Bundle

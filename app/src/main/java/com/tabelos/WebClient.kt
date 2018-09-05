@@ -1,4 +1,4 @@
-package com.tabelos.tabelos
+package com.tabelos
 
 import android.app.AlertDialog
 import android.net.http.SslCertificate
