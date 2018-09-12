@@ -1,19 +1,33 @@
 package com.tabelos
 
 import fi.iki.elonen.NanoHTTPD
+import java.io.IOException
+import java.io.InputStream
+import java.net.URLConnection
+import java.nio.charset.Charset
 
-class WebServer(hostname:String, port: Int) : NanoHTTPD(hostname, port) {
+
+class WebServer(hostname: String, port: Int) : NanoHTTPD(hostname, port) {
 
     override fun serve(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
-        var msg = "<html><body><h1>Hello server</h1>\n"
-        val parms = session.parms
-        if (parms["username"] == null) {
-            msg += "<form action='?' method='get'>\n"
-            msg += "<p>Your name: <input type='text' name='username'></p>\n"
-            msg += "</form>\n"
-        } else {
-            msg += "<p>Hello, " + parms["username"] + "!</p>"
+        var uri: String = session.uri.removePrefix("/")
+        if (uri.equals("")) {
+            uri = "index.html"
         }
-        return NanoHTTPD.newFixedLengthResponse("$msg</body></html>\n")
+        return serveFile(uri)
+    }
+
+    fun serveFile(uri: String):NanoHTTPD.Response {
+        var response:NanoHTTPD.Response = NanoHTTPD.newFixedLengthResponse("<!doctype html><html><head><meta charset=\"utf-8\"><title>Tabelos</title></head><body>File not found: "+uri+"</body></html>\n")
+        if (uri.contains(".")) {
+            try {
+                val inputStream:InputStream = MainActivity.appContext.resources.assets.open(uri);
+                val mimeType:String = URLConnection.guessContentTypeFromStream(inputStream);
+                var content:String = inputStream.readBytes().toString(Charset.defaultCharset())
+                response = NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, mimeType, content)
+            } catch (ex:IOException) {
+            }
+        }
+        return response
     }
 }

@@ -1,6 +1,7 @@
 package com.tabelos
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -10,8 +11,13 @@ import javax.net.ssl.SSLServerSocketFactory
 
 class MainActivity : Activity() {
 
+    companion object{
+        lateinit var appContext:Context
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appContext = applicationContext
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         runServer()
         runClient()
