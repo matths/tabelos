@@ -8,6 +8,8 @@ import android.view.Window
 import fi.iki.elonen.NanoHTTPD
 import org.jetbrains.anko.*
 import javax.net.ssl.SSLServerSocketFactory
+import android.net.wifi.WifiManager
+
 
 class MainActivity : Activity() {
 
@@ -19,6 +21,8 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         appContext = applicationContext
         requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        System.out.println("IP address " + getOwnIp())
         runServer()
         runClient()
     }
@@ -28,6 +32,17 @@ class MainActivity : Activity() {
         if (hasFocus) {
             hideSystemUI()
         }
+    }
+
+    public fun getOwnIp():String {
+        val wifiManager = appContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        var ipAddress = wifiManager.connectionInfo.ipAddress
+        val ipString =
+                (ipAddress and 0xFF).toString() + "." +
+                (ipAddress shr 8 and 0xFF) + "." +
+                (ipAddress shr 16 and 0xFF) + "." +
+                (ipAddress shr 24 and 0xFF);
+        return ipString;
     }
 
     private fun runServer() {
