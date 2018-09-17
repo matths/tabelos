@@ -9,7 +9,9 @@ import fi.iki.elonen.NanoHTTPD
 import javax.net.ssl.SSLServerSocketFactory
 import android.net.wifi.WifiManager
 import android.view.KeyEvent
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import org.json.JSONArray
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.graphics.PixelFormat
@@ -20,8 +22,8 @@ import android.widget.RelativeLayout
 
 class MainActivity : Activity() {
 
-    companion object{
-        lateinit var appContext:Context
+    companion object {
+        lateinit var appContext: Context
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,7 @@ class MainActivity : Activity() {
         appContext = applicationContext
 
         WebView.setWebContentsDebuggingEnabled(true)
+
         System.out.println("IP address " + getOwnIp())
         runServer()
         runClient()
@@ -125,17 +128,6 @@ class MainActivity : Activity() {
         return statusBarHeight
     }
 
-    public fun getOwnIp():String {
-        val wifiManager = appContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        var ipAddress = wifiManager.connectionInfo.ipAddress
-        val ipString =
-                (ipAddress and 0xFF).toString() + "." +
-                (ipAddress shr 8 and 0xFF) + "." +
-                (ipAddress shr 16 and 0xFF) + "." +
-                (ipAddress shr 24 and 0xFF);
-        return ipString;
-    }
-
     private fun runServer() {
         try {
             val webServer = WebServer(Constants.HOSTNAME, Constants.PORT)
@@ -170,4 +162,18 @@ class MainActivity : Activity() {
 
         this.addContentView(relativeLayout, layoutParams)
     }
+
+    @JavascriptInterface
+    fun getOwnIp(): String {
+        val wifiManager = appContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val ipAddress = wifiManager.connectionInfo.ipAddress
+        val ipArray = arrayOf(
+                ipAddress and 0xFF,
+                ipAddress shr 8 and 0xFF,
+                ipAddress shr 16 and 0xFF,
+                ipAddress shr 24 and 0xFF
+        )
+        return JSONArray(ipArray).toString()
+    }
+
 }
