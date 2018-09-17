@@ -32,6 +32,7 @@ class MainActivity : Activity() {
 
         appContext = applicationContext
 
+        WebView.setWebContentsDebuggingEnabled(true)
         System.out.println("IP address " + getOwnIp())
         runServer()
         runClient()
