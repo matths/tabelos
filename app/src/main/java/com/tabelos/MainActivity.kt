@@ -8,7 +8,9 @@ import android.view.Window
 import fi.iki.elonen.NanoHTTPD
 import javax.net.ssl.SSLServerSocketFactory
 import android.net.wifi.WifiManager
+import android.view.KeyEvent
 import android.webkit.WebView
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.graphics.PixelFormat
 import android.view.WindowManager
@@ -120,13 +122,6 @@ class MainActivity : Activity() {
             statusBarHeight = resources.getDimensionPixelSize(resId)
         }
         return statusBarHeight
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            hideSystemUI()
-        }
     }
 
     public fun getOwnIp():String {
