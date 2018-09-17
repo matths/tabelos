@@ -21,9 +21,12 @@ class MainActivity : Activity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState)
+
         appContext = applicationContext
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
 
         System.out.println("IP address " + getOwnIp())
         runServer()
