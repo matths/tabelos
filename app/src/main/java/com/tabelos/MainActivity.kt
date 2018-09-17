@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import fi.iki.elonen.NanoHTTPD
-import org.jetbrains.anko.*
 import javax.net.ssl.SSLServerSocketFactory
 import android.net.wifi.WifiManager
-
+import android.webkit.WebView
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.webkit.WebChromeClient
+import android.widget.RelativeLayout
 
 class MainActivity : Activity() {
 
@@ -72,7 +75,27 @@ class MainActivity : Activity() {
     }
 
     private fun runClient() {
-        MainActivityUi().setContentView(this)
+
+        var layoutParams:ViewGroup.LayoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+        var webView = WebView(applicationContext)
+        with(webView) {
+            settings.setSupportMultipleWindows(false)
+            settings.setSupportZoom(false)
+            settings.loadWithOverviewMode = true
+            settings.useWideViewPort = true
+            settings.javaScriptEnabled = true
+        }
+        webView.layoutParams = layoutParams
+        webView.setInitialScale(1)
+        webView.setWebViewClient(WebClient())
+        webView.addJavascriptInterface(this, "JSInterface")
+        webView.loadUrl("https://" + Constants.HOSTNAME + ":"+ Constants.PORT+"/")
+
+        var relativeLayout = RelativeLayout(this)
+        relativeLayout.addView(webView)
+
+        this.addContentView(relativeLayout, layoutParams)
     }
 
     private fun hideSystemUI() {
