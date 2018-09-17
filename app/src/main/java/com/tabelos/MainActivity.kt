@@ -10,7 +10,9 @@ import javax.net.ssl.SSLServerSocketFactory
 import android.net.wifi.WifiManager
 import android.webkit.WebView
 import android.view.ViewGroup
+import android.graphics.PixelFormat
 import android.view.WindowManager
+import android.view.Gravity
 import android.webkit.WebChromeClient
 import android.widget.RelativeLayout
 
@@ -31,6 +33,59 @@ class MainActivity : Activity() {
         System.out.println("IP address " + getOwnIp())
         runServer()
         runClient()
+
+        createStatusBarBlocker()
+    }
+
+    fun createStatusBarBlocker() {
+
+        val statusBarBlocker = object:ViewGroup(applicationContext) {
+            override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+            }
+            override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+                return true
+            }
+        }
+
+        var statusBarHeight = getStatusBarHeight()
+        val localLayoutParams: WindowManager.LayoutParams = getLayoutParamsForStatusBarBlockerWithSize(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                statusBarHeight
+        )
+
+        val windowManager = applicationContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager.addView(statusBarBlocker, localLayoutParams);
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+    }
+
+    private fun getLayoutParamsForStatusBarBlockerWithSize(width:Int, height:Int): WindowManager.LayoutParams {
+        val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
+
+        layoutParams.width = width
+        layoutParams.height = height
+
+        // this allows the view to be displayed over the status bar
+        layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR
+        layoutParams.gravity = Gravity.TOP
+        layoutParams.format = PixelFormat.TRANSLUCENT
+        layoutParams.flags =
+                // this is to keep button presses going to the background window
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                // this is to enable the notification to recieve touch events
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                // Draws over status bar
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+        return layoutParams
+    }
+
+    private fun getStatusBarHeight(): Int {
+        val resId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        var statusBarHeight = 60
+        if (resId > 0) {
+            statusBarHeight = resources.getDimensionPixelSize(resId)
+        }
+        return statusBarHeight
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
