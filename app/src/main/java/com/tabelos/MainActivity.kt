@@ -37,6 +37,13 @@ class MainActivity : Activity() {
         createStatusBarBlocker()
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            hideSystemUI()
+        }
+    }
+
     private fun hideSystemUI() {
         val decorView = window.decorView
         decorView.systemUiVisibility = (
@@ -46,6 +53,22 @@ class MainActivity : Activity() {
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         or View.SYSTEM_UI_FLAG_FULLSCREEN)
+    }
+
+    // disable back button
+    override fun onBackPressed() {
+        System.out.println("back button pressed")
+    }
+
+    // disable volume buttons
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        System.out.println("volume button pressed")
+        val blockedKeys = listOf<Int>(KeyEvent.KEYCODE_VOLUME_DOWN, KeyEvent.KEYCODE_VOLUME_UP)
+        return if (blockedKeys.contains(event.getKeyCode())) {
+            true
+        } else {
+            super.dispatchKeyEvent(event)
+        }
     }
 
     fun createStatusBarBlocker() {
