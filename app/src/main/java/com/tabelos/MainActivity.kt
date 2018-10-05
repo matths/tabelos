@@ -17,7 +17,6 @@ import android.view.ViewGroup
 import android.graphics.PixelFormat
 import android.view.WindowManager
 import android.view.Gravity
-import android.webkit.WebChromeClient
 import android.widget.RelativeLayout
 
 class MainActivity : Activity() {
@@ -27,20 +26,15 @@ class MainActivity : Activity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        goFullScreen()
+        setRotationAnimation()
         super.onCreate(savedInstanceState)
-
         appContext = applicationContext
-
         WebView.setWebContentsDebuggingEnabled(true)
-
+        createStatusBarBlocker()
         System.out.println("IP address " + getOwnIp())
         runServer()
         runClient()
-
-        createStatusBarBlocker()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -97,6 +91,19 @@ class MainActivity : Activity() {
         windowManager.addView(statusBarBlocker, localLayoutParams);
 
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+    }
+
+    private fun setRotationAnimation() {
+        val rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_CROSSFADE
+        val win = window
+        val winParams = win.attributes
+        winParams.rotationAnimation = rotationAnimation
+        win.attributes = winParams
+    }
+
+    private fun goFullScreen() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private fun getLayoutParamsForStatusBarBlockerWithSize(width:Int, height:Int): WindowManager.LayoutParams {
