@@ -8,25 +8,29 @@ import java.io.IOException
 
 class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD.WebSocket(handshakeRequest) {
 
-    var peer:Peer
-
-    init {
-        peer = Peer()
-        peer.webSocket = this;
-    }
-
     override protected fun onOpen() {
         System.out.println("onOpen " + this.handshakeRequest.remoteIpAddress)
-        State.peers.addTablet(peer)
+
+        val sessionId: String? = this.handshakeRequest.cookies.read("session")
+        val peerExists = (sessionId != null) && com.tabelos.State.peers.containsKey(sessionId)
+        if (!peerExists) {
+            this.close(WebSocketFrame.CloseCode.GoingAway, "session has gone", false)
+        } else {
+            val peer = com.tabelos.State.peers[sessionId]
+            if (peer != null) {
+                peer.webSocket = this
+            }
+        }
     }
 
     override protected fun onClose(code: CloseCode?, reason: String?, initiatedByRemote: Boolean) {
         System.out.println("onClose");
-            State.peers.removeTablet(peer)
+        val sessionId:String = this.handshakeRequest.cookies.read("session")
+        com.tabelos.State.peers.remove(sessionId)
     }
 
     override  protected fun onMessage(message: WebSocketFrame) {
-        System.out.println("onMessage");
+        System.out.println("onMessage" + message.textPayload);
         try {
             message.setUnmasked()
             sendFrame(message)
@@ -37,13 +41,13 @@ class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD
 
     override protected fun onPong(pong: WebSocketFrame) {
         val charset = Charsets.UTF_8
-        var msg = pong.binaryPayload.toString(charset)
+        val msg = pong.binaryPayload.toString(charset)
         System.out.println("onPong: " + msg);
     }
 
     override protected fun onException(exception: IOException) {
         System.out.println("onException" + exception.message);
-        State.peers.removeTablet(peer)
+        this.close(WebSocketFrame.CloseCode.AbnormalClosure, exception.message, true)
     }
 
     override protected fun debugFrameReceived(frame: WebSocketFrame) {
