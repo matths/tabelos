@@ -1,6 +1,6 @@
 package com.tabelos
 
-object State {
+object Central {
 
     const val HOSTNAME = "127.0.0.1"
     const val PORT = 8443

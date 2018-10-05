@@ -18,9 +18,9 @@ class WebServer(hostname: String, port: Int) : NanoWSD(hostname, port) {
 
         var renewSession:Boolean = false;
         var sessionId:String = session.cookies.read("session")
-        val peerExists = (sessionId != null) && com.tabelos.State.peers.containsKey(sessionId)
+        val peerExists = (sessionId != null) && Central.peers.containsKey(sessionId)
         if (!peerExists) {
-            sessionId = com.tabelos.State.peers.newPeer()
+            sessionId = Central.peers.newPeer()
             renewSession = true;
         }
 

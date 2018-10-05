@@ -12,11 +12,11 @@ class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD
         System.out.println("onOpen " + this.handshakeRequest.remoteIpAddress)
 
         val sessionId: String? = this.handshakeRequest.cookies.read("session")
-        val peerExists = (sessionId != null) && com.tabelos.State.peers.containsKey(sessionId)
+        val peerExists = (sessionId != null) && Central.peers.containsKey(sessionId)
         if (!peerExists) {
             this.close(WebSocketFrame.CloseCode.GoingAway, "session has gone", false)
         } else {
-            val peer = com.tabelos.State.peers[sessionId]
+            val peer = Central.peers[sessionId]
             if (peer != null) {
                 peer.webSocket = this
             }
@@ -26,7 +26,7 @@ class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD
     override protected fun onClose(code: CloseCode?, reason: String?, initiatedByRemote: Boolean) {
         System.out.println("onClose");
         val sessionId:String = this.handshakeRequest.cookies.read("session")
-        com.tabelos.State.peers.remove(sessionId)
+        Central.peers.remove(sessionId)
     }
 
     override  protected fun onMessage(message: WebSocketFrame) {
