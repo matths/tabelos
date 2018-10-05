@@ -6,7 +6,6 @@ import fi.iki.elonen.NanoHTTPD.IHTTPSession
 import fi.iki.elonen.NanoWSD
 import java.io.IOException
 
-
 class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD.WebSocket(handshakeRequest) {
 
     var tablet:Tablet
@@ -17,7 +16,7 @@ class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD
     }
 
     override protected fun onOpen() {
-        System.out.println("onOpen" + this.handshakeRequest.remoteIpAddress);
+        System.out.println("onOpen " + this.handshakeRequest.remoteIpAddress)
         State.tabletList.addTablet(tablet)
     }
 
@@ -37,7 +36,9 @@ class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD
     }
 
     override protected fun onPong(pong: WebSocketFrame) {
-        System.out.println("onPong");
+        val charset = Charsets.UTF_8
+        var msg = pong.binaryPayload.toString(charset)
+        System.out.println("onPong: " + msg);
     }
 
     override protected fun onException(exception: IOException) {
