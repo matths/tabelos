@@ -130,8 +130,9 @@ class MainActivity : Activity() {
 
     private fun runServer() {
         try {
-            val webServer = WebServer(Constants.HOSTNAME, Constants.PORT)
-            val sslServerSocketFactory: SSLServerSocketFactory = NanoHTTPD.makeSSLSocketFactory(Constants.KEYSTORE_PATH, Constants.KEYSTORE_PASSWORD.toCharArray())
+//            val webServer = WebServer(State.HOSTNAME, State.PORT)
+            val webServer = WebServer("0.0.0.0", State.PORT)
+            val sslServerSocketFactory: SSLServerSocketFactory = NanoHTTPD.makeSSLSocketFactory(State.KEYSTORE_PATH, State.KEYSTORE_PASSWORD.toCharArray())
             webServer.makeSecure(sslServerSocketFactory, null);
             webServer.start()
         } catch (e: Exception) {
@@ -155,7 +156,7 @@ class MainActivity : Activity() {
         webView.setInitialScale(1)
         webView.setWebViewClient(WebClient())
         webView.addJavascriptInterface(this, "JSInterface")
-        webView.loadUrl("https://" + Constants.HOSTNAME + ":"+ Constants.PORT+"/")
+        webView.loadUrl("https://" + State.HOSTNAME + ":"+ State.PORT+"/")
 
         var relativeLayout = RelativeLayout(this)
         relativeLayout.addView(webView)

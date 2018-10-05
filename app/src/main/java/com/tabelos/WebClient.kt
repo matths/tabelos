@@ -40,9 +40,9 @@ class WebClient : WebViewClient() {
 
     fun isKnownSelfSignedCert(certFromWebServer: SslCertificate): Boolean {
 
-        val keystoreStream = NanoHTTPD::class.java.getResourceAsStream(Constants.KEYSTORE_PATH)
+        val keystoreStream = NanoHTTPD::class.java.getResourceAsStream(State.KEYSTORE_PATH)
         val keystore = KeyStore.getInstance(KeyStore.getDefaultType())
-        keystore.load(keystoreStream, Constants.KEYSTORE_PASSWORD.toCharArray())
+        keystore.load(keystoreStream, State.KEYSTORE_PASSWORD.toCharArray())
         val certFromKeyStore: Certificate = keystore.getCertificate("tabelos")
 
         val certFromKeyStoreAsX509: X509Certificate = certFromKeyStore as X509Certificate
