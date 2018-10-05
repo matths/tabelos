@@ -1,5 +1,5 @@
 package com.tabelos
 
-class Tablet {
+class Peer {
     var webSocket: WebSocket? = null
 }

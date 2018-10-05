@@ -5,11 +5,11 @@ import java.io.IOException
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
-class TabletList {
-    internal var list: Vector<Tablet>
+class Peers {
+    internal var list: Vector<Peer>
 
     init {
-        list = Vector<Tablet>()
+        list = Vector<Peer>()
         val timer = fixedRateTimer(name = "ping-timer", initialDelay = 4000, period = 4000) {
             println("ping timer")
             pingAll()
@@ -17,12 +17,12 @@ class TabletList {
 
     }
 
-    fun addTablet(tablet: Tablet) {
-        list.add(tablet)
+    fun addTablet(peer: Peer) {
+        list.add(peer)
     }
 
-    fun removeTablet(tablet: Tablet) {
-        list.remove(tablet)
+    fun removeTablet(peer: Peer) {
+        list.remove(peer)
     }
 
     fun tabletCount(): Int {

@@ -8,5 +8,5 @@ object State {
     const val KEYSTORE_PASSWORD = "password"
 
     var ipAddress:Array<Int>? = null
-    val tabletList:TabletList = TabletList();
+    val peers:Peers = Peers();
 }

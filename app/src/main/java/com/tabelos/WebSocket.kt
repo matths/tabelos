@@ -8,21 +8,21 @@ import java.io.IOException
 
 class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD.WebSocket(handshakeRequest) {
 
-    var tablet:Tablet
+    var peer:Peer
 
     init {
-        tablet = Tablet()
-        tablet.webSocket = this;
+        peer = Peer()
+        peer.webSocket = this;
     }
 
     override protected fun onOpen() {
         System.out.println("onOpen " + this.handshakeRequest.remoteIpAddress)
-        State.tabletList.addTablet(tablet)
+        State.peers.addTablet(peer)
     }
 
     override protected fun onClose(code: CloseCode?, reason: String?, initiatedByRemote: Boolean) {
         System.out.println("onClose");
-            State.tabletList.removeTablet(tablet)
+            State.peers.removeTablet(peer)
     }
 
     override  protected fun onMessage(message: WebSocketFrame) {
@@ -43,7 +43,7 @@ class WebSocket(val server: WebServer, handshakeRequest: IHTTPSession) : NanoWSD
 
     override protected fun onException(exception: IOException) {
         System.out.println("onException" + exception.message);
-        State.tabletList.removeTablet(tablet)
+        State.peers.removeTablet(peer)
     }
 
     override protected fun debugFrameReceived(frame: WebSocketFrame) {
