@@ -21,6 +21,10 @@ class WebClient : WebViewClient() {
         return true
     }
 
+    override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
+        super.onReceivedError(view, errorCode, description, failingUrl)
+    }
+
     // credits to @Heath Borders at http://stackoverflow.com/questions/20228800/how-do-i-validate-an-android-net-http-sslcertificate-with-an-x509trustmanager
     fun getX509Certificate(sslCertificate: SslCertificate): Certificate? {
         val bundle = SslCertificate.saveState(sslCertificate)
