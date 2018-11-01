@@ -17,7 +17,7 @@ class WebServer(hostname: String, port: Int) : NanoWSD(hostname, port) {
         System.out.println("serve");
 
         var renewSession:Boolean = false;
-        var sessionId:String = session.cookies.read("session")
+        var sessionId = session.cookies.read("session")
         val peerExists = (sessionId != null) && Central.peers.containsKey(sessionId)
         if (!peerExists) {
             sessionId = Central.peers.newPeer()
