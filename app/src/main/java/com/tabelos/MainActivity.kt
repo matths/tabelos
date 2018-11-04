@@ -73,9 +73,10 @@ class MainActivity : Activity() {
 
     fun createStatusBarBlocker() {
 
-        val statusBarBlocker = object:ViewGroup(applicationContext) {
+        val statusBarBlocker = object : ViewGroup(applicationContext) {
             override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
             }
+
             override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
                 return true
             }
@@ -106,7 +107,7 @@ class MainActivity : Activity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    private fun getLayoutParamsForStatusBarBlockerWithSize(width:Int, height:Int): WindowManager.LayoutParams {
+    private fun getLayoutParamsForStatusBarBlockerWithSize(width: Int, height: Int): WindowManager.LayoutParams {
         val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams()
 
         layoutParams.width = width
@@ -149,7 +150,7 @@ class MainActivity : Activity() {
 
     private fun runClient() {
 
-        var layoutParams:ViewGroup.LayoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        var layoutParams: ViewGroup.LayoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         var webView = WebView(applicationContext)
         with(webView) {
@@ -163,7 +164,9 @@ class MainActivity : Activity() {
         webView.setInitialScale(1)
         webView.setWebViewClient(WebClient())
         webView.addJavascriptInterface(this, "JSInterface")
-        webView.loadUrl("https://" + Central.HOSTNAME + ":"+ Central.PORT+"/")
+        webView.loadUrl("https://" + Central.HOSTNAME + ":" + Central.PORT + "/")
+//        webView.loadUrl("file:///android_asset/setup.html");
+//        webView.evaluateJavascript()
 
         var relativeLayout = RelativeLayout(this)
         relativeLayout.addView(webView)
