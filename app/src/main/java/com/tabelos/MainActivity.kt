@@ -18,8 +18,15 @@ import android.graphics.PixelFormat
 import android.view.WindowManager
 import android.view.Gravity
 import android.widget.RelativeLayout
+import android.webkit.PermissionRequest
+import android.webkit.WebChromeClient
+import android.app.ActivityManager
+import android.graphics.Color
+import android.os.Handler
+import android.os.Message
+import android.text.format.DateUtils
 
-class MainActivity : Activity() {
+class MainActivity : Activity(), View.OnSystemUiVisibilityChangeListener {
 
     lateinit var statusBarBlocker:ViewGroup;
 
@@ -37,10 +44,16 @@ class MainActivity : Activity() {
 
         createStatusBarBlocker()
 
+        detectStatusBarChange()
+
         System.out.println("IP address " + getOwnIp())
 
         runServer()
         runClient()
+    }
+
+    fun detectStatusBarChange() {
+        window.decorView.setOnSystemUiVisibilityChangeListener(this)
     }
 
     override fun onPause() {
@@ -56,10 +69,26 @@ class MainActivity : Activity() {
         }
     }
 
+    private val mHandler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            if (msg.what === 10) {
+                hideSystemUI()
+            }
+        }
+    }
+    override fun onSystemUiVisibilityChange(visibility: Int) {
+        if (visibility == 0) {
+            statusBarBlocker.setBackgroundColor(Color.parseColor("#333333"))
+            mHandler.sendEmptyMessageDelayed(10, 3 * DateUtils.SECOND_IN_MILLIS)
+        } else {
+            statusBarBlocker.setBackgroundColor(Color.TRANSPARENT)
+        }
+    }
+
     private fun hideSystemUI() {
-        val decorView = window.decorView
-        decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        window.decorView.systemUiVisibility = (
+//                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                View.SYSTEM_UI_FLAG_IMMERSIVE
                         or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
