@@ -124,12 +124,21 @@ class MainActivity : Activity() {
     }
 
     private fun getStatusBarHeight(): Int {
-        val resId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        var statusBarHeight = 60
+        return getResourceDimension("status_bar_height", 25);
+    }
+
+    private fun getNavigationBarHeight(): Int {
+        return getResourceDimension("navigation_bar_height", 48);
+    }
+
+    private fun getResourceDimension(identifier:String, default:Int = 0): Int {
+        val resId = resources.getIdentifier(identifier, "dimen", "android")
+        var dim = default
         if (resId > 0) {
-            statusBarHeight = resources.getDimensionPixelSize(resId)
+            dim= resources.getDimensionPixelSize(resId)
         }
-        return statusBarHeight
+        System.out.println("DIMENSION OF "+identifier+" IS "+dim);
+        return dim
     }
 
     private fun runServer() {
