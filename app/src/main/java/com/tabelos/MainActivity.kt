@@ -21,6 +21,8 @@ import android.widget.RelativeLayout
 
 class MainActivity : Activity() {
 
+    lateinit var statusBarBlocker:ViewGroup;
+
     companion object {
         lateinit var appContext: Context
     }
@@ -73,7 +75,7 @@ class MainActivity : Activity() {
 
     fun createStatusBarBlocker() {
 
-        val statusBarBlocker = object : ViewGroup(applicationContext) {
+        statusBarBlocker = object : ViewGroup(applicationContext) {
             override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
             }
 
@@ -82,16 +84,16 @@ class MainActivity : Activity() {
             }
         }
 
-        var statusBarHeight = getStatusBarHeight()
-        val localLayoutParams: WindowManager.LayoutParams = getLayoutParamsForStatusBarBlockerWithSize(
+        val statusBarBlockerLayoutParams: WindowManager.LayoutParams = getLayoutParamsForStatusBarBlockerWithSize(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                statusBarHeight
+                getStatusBarHeight()
         )
+        getNavigationBarHeight();
 
-        val windowManager = applicationContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager.addView(statusBarBlocker, localLayoutParams);
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager.addView(statusBarBlocker, statusBarBlockerLayoutParams);
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
     }
 
     private fun setRotationAnimation() {
