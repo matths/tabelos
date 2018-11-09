@@ -43,6 +43,12 @@ class MainActivity : Activity() {
         runClient()
     }
 
+    override fun onPause() {
+        super.onPause()
+        val activityManager = applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        activityManager.moveTaskToFront(taskId, 0)
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
