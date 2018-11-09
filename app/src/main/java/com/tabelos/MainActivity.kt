@@ -30,11 +30,15 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         goFullScreen()
         setRotationAnimation()
+
         super.onCreate(savedInstanceState)
+
         appContext = applicationContext
-        WebView.setWebContentsDebuggingEnabled(true)
+
         createStatusBarBlocker()
+
         System.out.println("IP address " + getOwnIp())
+
         runServer()
         runClient()
     }
@@ -156,6 +160,8 @@ class MainActivity : Activity() {
     }
 
     private fun runClient() {
+
+        WebView.setWebContentsDebuggingEnabled(true)
 
         var layoutParams: ViewGroup.LayoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
