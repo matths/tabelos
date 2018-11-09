@@ -95,11 +95,7 @@ class MainActivity : Activity() {
     }
 
     private fun setRotationAnimation() {
-        val rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_CROSSFADE
-        val win = window
-        val winParams = win.attributes
-        winParams.rotationAnimation = rotationAnimation
-        win.attributes = winParams
+        window.attributes.rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_CROSSFADE
     }
 
     private fun goFullScreen() {
